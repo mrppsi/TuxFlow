@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TuxFlow | Data Cleaning Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="banner-header">
+    <img class="banner-image" src="../banner/1.jpeg" alt="TuxFlow Banner">
+    <div class="banner-overlay"></div>
+    <div class="banner-content">
+      <div class="brand">
+        <div class="brand-info">
+          <h1 class="brand-title">TuxFlow</h1>
+          <p class="brand-subtitle">Limpia, analiza y gestiona tus datos con inteligencia</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="topbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12h18M9 6h6M6 18h12M3 3h18v18H3z"></path>
+        </svg>
+        <span>TuxFlow</span>
+      </div>
+      <div class="topbar-actions">
+        <a class="ghost-link" href="manual.html"> Manual</a>
+        <div class="status" id="apiStatus">
+          <span class="status-dot"></span>
+          API pendiente
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <section class="workspace">
+      <div class="panel upload-panel">
+        <div class="panel-header">
+          <p class="eyebrow"> Datos</p>
+          <h2>Carga y procesa tus archivos</h2>
+          <p class="panel-description">Soporta CSV, XLSX y XLS. Análisis automático de estructura y calidad.</p>
+        </div>
+
+        <form id="uploadForm" class="upload-box">
+          <div class="file-input-wrapper">
+            <input id="fileInput" type="file" accept=".csv,.xlsx,.xls" required>
+            <label for="fileInput" class="file-label">
+              <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <span>Selecciona un archivo</span>
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary"> Cargar archivo</button>
+        </form>
+
+        <div class="controls">
+          <div class="control-group">
+            <label class="checkbox-label">
+              <input id="removeDuplicates" type="checkbox" checked>
+              <span>Eliminar duplicados</span>
+            </label>
+          </div>
+          <div class="control-group">
+            <label class="checkbox-label">
+              <input id="removeEmptyRows" type="checkbox" checked>
+              <span>Eliminar filas vacías</span>
+            </label>
+          </div>
+          <div class="control-group">
+            <label for="nullStrategy" class="label-inline">Nulos numéricos:</label>
+            <select id="nullStrategy">
+              <option value="none">Sin reemplazo</option>
+              <option value="mean">Media</option>
+              <option value="median">Mediana</option>
+            </select>
+          </div>
+          <button id="cleanButton" type="button" class="btn btn-secondary" disabled> Limpiar</button>
+        </div>
+
+        <div class="save-row">
+          <input id="tableName" type="text" value="processed_data" aria-label="Nombre de tabla" placeholder="processed_data">
+          <button id="saveButton" type="button" class="btn btn-success" disabled>Guardar en BD</button>
+          <button id="loadSavedButton" type="button" class="btn btn-info"> Ver guardados</button>
+        </div>
+      </div>
+
+      <aside class="panel stats-panel">
+        <p class="eyebrow">📊 Resumen</p>
+        <div class="metrics">
+          <div class="metric-card">
+            <div class="metric-value" id="rowCount">0</div>
+            <div class="metric-label">Filas</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="columnCount">0</div>
+            <div class="metric-label">Columnas</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="duplicateCount">0</div>
+            <div class="metric-label">Duplicados</div>
+          </div>
+        </div>
+        <div id="messageBox" class="message message-info">
+          <span class="message-icon">ℹ️</span>
+          <span>Carga un archivo para comenzar.</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="data-section">
+      <div class="table-wrap">
+        <div class="section-head">
+          <div>
+            <h3> Vista previa</h3>
+            <span id="datasetLabel" class="dataset-label">Sin dataset</span>
+          </div>
+        </div>
+        <div class="scroll-table">
+          <table id="previewTable"></table>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="section-head">
+          <div>
+            <h3> Valores nulos</h3>
+            <span class="detail-span">Por columna</span>
+          </div>
+        </div>
+        <div class="scroll-table small">
+          <table id="nullsTable"></table>
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard">
+      <div class="chart-panel">
+        <h3>📈 Series numéricas</h3>
+        <canvas id="seriesChart"></canvas>
+      </div>
+      <div class="chart-panel">
+        <h3>📊 Promedios</h3>
+        <canvas id="meansChart"></canvas>
+      </div>
+      <div class="chart-panel">
+        <h3>⚠️ Nulos</h3>
+        <canvas id="nullsChart"></canvas>
+      </div>
+    </section>
+
+    <section class="table-wrap">
+      <div class="section-head">
+        <div>
+          <h3>📈 Estadística descriptiva</h3>
+          <span class="detail-span">Columnas numéricas</span>
+        </div>
+      </div>
+      <div class="scroll-table">
+        <table id="numericStatsTable"></table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; 2026 mrpps. Todos los derechos reservados.</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
