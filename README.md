@@ -1,5 +1,5 @@
 # TuxFlow
-![TuxFlow Banner](banner/banner.png)
+![TuxFlow Banner](banner/1.jpeg)
 
 TuxFlow es una aplicacion web sencilla para cargar archivos CSV o XLSX, limpiar datos basicos, calcular estadisticas descriptivas y guardar el resultado en SQL Server 2022 Express.
 
