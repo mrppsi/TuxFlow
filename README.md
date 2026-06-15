@@ -1,7 +1,7 @@
 # TuxFlow
 ![TuxFlow Banner](banner/1.jpeg)
 
-TuxFlow es una aplicacion web sencilla para cargar archivos CSV o XLSX, limpiar datos basicos, calcular estadisticas descriptivas y guardar el resultado en SQL Server 2022 Express.
+TuxFlow es una aplicacion web sencilla para cargar archivos CSV o XLSX, limpiar datos basicos, calcular estadisticas descriptivas y guardar el resultado en SQL SV
 
 El proyecto esta pensado como portafolio para perfiles junior de Data Analyst o BI Analyst. Prioriza funcionalidad, claridad y ejecucion local sin sobreingenieria.
 
@@ -9,7 +9,7 @@ El proyecto esta pensado como portafolio para perfiles junior de Data Analyst o 
 
 - Backend: Python + Flask
 - Procesamiento: Pandas + NumPy
-- Base de datos: SQL Server 2022 Express
+- Base de datos: SQL SV 2022 Express
 - Conexion SQL Server: pyodbc
 - Frontend: HTML, CSS y JavaScript
 - Graficas: Chart.js
