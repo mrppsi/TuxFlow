@@ -64,8 +64,6 @@ TuxFlow/
 
 En Ubuntu/Debian, instala el driver siguiendo la documentacion oficial de Microsoft para `msodbcsql18`. En Windows, instala "ODBC Driver 18 for SQL Server".
 
-Nota: evita Python 3.14 para este proyecto si usas las versiones fijadas en `backend/requirements.txt`, porque algunas librerias de datos pueden intentar compilarse desde codigo fuente.
-
 ## Instalacion
 
 1. Clona el repositorio:
@@ -75,22 +73,17 @@ git clone https://github.com/tu-usuario/TuxFlow.git
 cd TuxFlow
 ```
 
-2. Levanta SQL Server Express:
-
-```bash
-docker compose up -d
-```
-
-3. Crea la base de datos con Azure Data Studio:
+2. Crea la base de datos:
 
 - Server: `localhost,1433`
 - User: `sa`
 - Password: `YourStrong!Passw0rd`
 - Ejecuta el script `database/create_database.sql`
 
-4. Prepara el backend:
+3. Prepara el backend:
 
 ```bash
+docker compose up -d
 cd backend
 python -m venv .venv
 source .venv/bin/activate
@@ -110,7 +103,7 @@ copy .env.example .env
 python app.py
 ```
 
-5. Abre el frontend:
+4. Abre el frontend:
 
 Abre `frontend/index.html` en el navegador.
 
@@ -153,9 +146,8 @@ SQL_DRIVER=ODBC Driver 18 for SQL Server
 SQL_TRUST_CERTIFICATE=yes
 ```
 
-## Notas para portafolio
 
-Este proyecto demuestra:
+## Este proyecto demuestra:
 
 - Lectura y procesamiento de datos con Pandas.
 - Limpieza basica de datasets.
@@ -165,8 +157,7 @@ Este proyecto demuestra:
 - Visualizacion simple de datos.
 - Uso de Docker para base de datos local.
 
-## Mejoras futuras
-
+## Actualizaciones al Sistema Futuras 
 - Agregar historico de cargas.
 - Exportar datos limpios a CSV.
 - Seleccionar columnas antes de guardar.
